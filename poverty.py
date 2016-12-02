@@ -29,7 +29,7 @@ def main(results, boundaries, output, width):
                 new_coords.append((float(coords[index]),mercator(float(coords[index+1]))))
         return new_coords
 
-    with open(boundaries, 'r') as f1, open (results, 'r') as f2:
+    with open(boundaries, 'r') as f1, open (poverty_data, 'r') as f2:
         region_list = [Region(to_point(bounds),float(poverty_percent[10])) for bounds,poverty_percent in zip(csv.reader(f1),csv.reader(f2))]
     regionminlat = min([region.min_lat() for region in region_list])
     regionmaxlat = max([region.max_lat() for region in region_list])
@@ -40,9 +40,6 @@ def main(results, boundaries, output, width):
     for region in region_list:
         region_plot.draw(region)
     region_plot.save(output)
-
-
-#I don't care about the style it will always be gradient
 
 if __name__ == '__main__':
     poverty_data = sys.argv[1]
