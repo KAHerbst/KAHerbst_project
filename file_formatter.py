@@ -17,7 +17,6 @@ with open('poverty_trimmed.csv', 'w') as fout:
 
 with open('boundaries.csv' ,'r') as bounds_initial:
     with open('boundaries_trimmed.csv', 'w') as bounds:
-        next(bounds_initial)
         for row in bounds_initial:
             bounds.write(row)
 
@@ -32,7 +31,7 @@ with open('boundaries_trimmed.csv', 'r') as bounds:
     with open('poverty_formatted.csv', 'w') as pov_final:
         writer = csv.writer(pov_final)
         for row in boundaries:
-            row_lst = row[3].split()
-            if row_lst[0] not in poverty_dict:
-                poverty_dict[row_lst[0]] = [row_lst[0], '14.5']
-            writer.writerow(poverty_dict[row_lst[0]])
+            print(row[0])
+            if row[0] not in poverty_dict:
+                poverty_dict[row[0]] = [row[0], '14.5']
+            writer.writerow(poverty_dict[row[0]])
