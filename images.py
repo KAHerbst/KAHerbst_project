@@ -5,6 +5,8 @@ from region import Region
 from plot import Plot
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL import Image
+
 
 def mercator(lat):
     """project latitude 'lat' according to Mercator"""
@@ -53,11 +55,11 @@ def subplots(filename,year_cap):
     SNAP_lst = [17.194000, 17.318000, 19.096000, 21.250000, 23.811000, 25.628000, 26.549000, 26.316000, 28.223000, 33.490000, 40.302000, 44.709000, 46.609000, 47.636000, 46.664000]
     years = [x for x in range(int(year_cap)-2000)]
 
-    plt1 = plt.subplot2grid((4,10),(0,0), colspan = 9, rowspan = 2)
+    plt1 = plt.subplot2grid((2,6),(0,1), colspan = 5, rowspan = 1)
     for x in years:
         plt1.scatter(x,pov_lst[x])
 
-    plt2 = plt.subplot2grid((4,10),(2,0), colspan = 9, rowspan = 2)
+    plt2 = plt.subplot2grid((2,6),(1,1), colspan = 5, rowspan = 1)
     for x in years:
         plt2.scatter(x,SNAP_lst[x])
 
@@ -66,6 +68,26 @@ def subplots(filename,year_cap):
     plt2.set_ylabel('SNAP Enrollment (In Millions)')
     plt.tight_layout()
     plt.savefig(filename)
+
+def stitch(pov_map, plots):
+    """Merge two images into one, displayed side by side
+    :param file1: path to first image file
+    :param file2: path to second image file
+    :return: the merged Image object
+    """
+    image1 = Image.open(pov_map)
+    image2 = Image.open(plots)
+
+    (width1, height1) = image1.size
+    (width2, height2) = image2.size
+
+    result_width = width1 + width2
+    result_height = max(height1, height2)
+
+    result = Image.new('RGB', (result_width, result_height))
+    result.paste(im=image1, box=(0, 0))
+    result.paste(im=image2, box=(width1, 0))
+    result.save('stitched.png')
 
 
 if __name__ == '__main__':
@@ -77,6 +99,7 @@ if __name__ == '__main__':
     year_cap = sys.argv[6]
     main(poverty, boundaries, output, width, style)
     subplots('plots.png',year_cap)
+    stitch('output.png','plots.png')
 
 # To run
 # python poverty.py poverty_formatted.csv boundaries_trimmed.csv output.png 1024 GRAD 2014
