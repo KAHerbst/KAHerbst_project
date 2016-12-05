@@ -46,6 +46,8 @@ def main(poverty, boundaries, output, width, style):
     region_plot.save(output)
 
 def subplots(filename,year_cap):
+    '''Creates two subplots graphing US overall poverty percentage and SNAP enrollment and saves them to a specified filename'''
+    
     pov_lst = [11.3, 11.7, 12.1, 12.5, 12.7, 13.3, 13.3, 13.0, 13.2, 14.3, 15.3, 15.9, 15.9, 15.8, 15.5]
 
     SNAP_lst = [17.194000, 17.318000, 19.096000, 21.250000, 23.811000, 25.628000, 26.549000, 26.316000, 28.223000, 33.490000, 40.302000, 44.709000, 46.609000, 47.636000, 46.664000]
