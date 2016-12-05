@@ -10,7 +10,7 @@ def mercator(lat):
     projection = math.log(math.tan((math.pi / 4) + (lat_rad / 2)))
     return (180 * projection) / math.pi
 
-def main(results, boundaries, output, width):
+def main(poverty, boundaries, output, width, style):
     """
     Draws an image.
     This function creates an image object, constructs Region objects by reading
@@ -21,6 +21,7 @@ def main(results, boundaries, output, width):
         boundaries (str): name of a csv file of geographic information
         output (str): name of a file to save the image
         width (int): width of the image
+        style (str): either 'GRAD' or 'SOLID'
     """
     def to_point(coords):
         new_coords=[]
@@ -29,21 +30,26 @@ def main(results, boundaries, output, width):
                 new_coords.append((float(coords[index]),mercator(float(coords[index+1]))))
         return new_coords
 
-    with open(boundaries, 'r') as f1, open (poverty_data, 'r') as f2:
-        region_list = [Region(to_point(bounds),float(poverty_percent[10])) for bounds,poverty_percent in zip(csv.reader(f1),csv.reader(f2))]
+    with open(boundaries, 'r') as f1, open (poverty, 'r') as f2:
+        region_list = [Region(to_point(bounds),float(pov_percent[1])) for bounds,pov_percent in zip(csv.reader(f1),csv.reader(f2))]
     regionminlat = min([region.min_lat() for region in region_list])
     regionmaxlat = max([region.max_lat() for region in region_list])
     regionminlong = min([region.min_long() for region in region_list])
     regionmaxlong = max([region.max_long() for region in region_list])
+    
 
     region_plot = Plot(width,regionminlong,regionminlat,regionmaxlong,regionmaxlat)
     for region in region_list:
-        region_plot.draw(region)
+        region_plot.draw(region,style)
     region_plot.save(output)
 
+
+
+
 if __name__ == '__main__':
-    poverty_data = sys.argv[1]
+    poverty = sys.argv[1]
     boundaries = sys.argv[2]
     output = sys.argv[3]
     width = int(sys.argv[4])
-    main(results, boundaries, output, width, style)
+    style = sys.argv[5]
+    main(poverty, boundaries, output, width, style)
