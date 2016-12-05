@@ -49,7 +49,8 @@ class Plot:
         Yields:
             (int, int, int): a triple (RGB values between 0 and 255)
         """
-        return (int(region.poverty_rate()*210), int(region.poverty_rate()*195), int(region.poverty_rate()*229))
+        return (255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1100))
+
 
     @staticmethod
     def fill(region, style):
@@ -89,5 +90,7 @@ class Plot:
 
         def trans_lats():
             return[self.height - int(Plot.interpolate(lat, self.min_lat,self.max_lat,self.height)) for lat in region.lats()]
+
+        coords = [(x,y) for x,y in zip(trans_longs(),trans_lats())]
 
         ImageDraw.Draw(self.Image).polygon(coords,Plot.fill(region,style), outline = None)
