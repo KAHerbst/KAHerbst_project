@@ -1,5 +1,6 @@
 import sys
 import csv
+import pandas as pd
 import math
 from region import Region
 from plot import Plot
@@ -13,6 +14,40 @@ def mercator(lat):
     lat_rad = (lat * math.pi) / 180
     projection = math.log(math.tan((math.pi / 4) + (lat_rad / 2)))
     return (180 * projection) / math.pi
+
+def file_formatter(poverty_file, boundary_file):
+    f=pd.read_csv(poverty_file)
+    keep_col = ['State / County Name' , 'All Ages in Poverty Percent']
+    new_f = f[keep_col]
+    new_f.to_csv('poverty_trimmed_initial.csv', index=False)
+    with open('poverty_trimmed.csv', 'w') as fout:
+        writer = csv.writer(fout)
+        with open('poverty_trimmed_initial.csv', 'r') as fin:
+            reader = csv.reader(fin)
+            for rownum, entry in enumerate(reader):
+                if rownum<1:continue
+                writer.writerow(entry)
+    with open(boundary_file ,'r') as bounds_initial:
+        with open('boundaries_trimmed.csv', 'w') as bounds:
+            for row in bounds_initial:
+                bounds.write(row)
+    poverty_dict = {}
+    with open('poverty_trimmed.csv','r') as trim:
+        trim_read = csv.reader(trim)
+        for row in trim_read:
+            lst = row[0].split()
+            poverty_dict[lst[0]] = row
+    with open('boundaries_trimmed.csv', 'r') as bounds:
+        boundaries = csv.reader(bounds)
+        with open('poverty_formatted.csv', 'w') as pov_final:
+            writer = csv.writer(pov_final)
+            for row in boundaries:
+                print(row[0])
+                if row[0] not in poverty_dict:
+                    poverty_dict[row[0]] = [row[0], '14.5']
+                writer.writerow(poverty_dict[row[0]])
+
+
 
 def main(poverty, boundaries, output, width, style):
     """
@@ -88,13 +123,16 @@ def stitch(pov_map, plots):
 
 
 if __name__ == '__main__':
-    poverty = sys.argv[1]
-    boundaries = sys.argv[2]
-    output = sys.argv[3]
-    width = int(sys.argv[4])
-    style = sys.argv[5]
-    year_cap = sys.argv[6]
-    main(poverty, boundaries, output, width, style)
+    poverty_file = sys.argv[1]
+    boundary_file = sys.argv[2]
+    poverty_formatted= sys.argv[3]
+    boundaries_formatted = sys.argv[4]
+    output = sys.argv[5]
+    width = int(sys.argv[6])
+    style = sys.argv[7]
+    year_cap = sys.argv[8]
+    file_formatter(poverty_file, boundary_file)
+    main(poverty_formatted, boundaries_formatted, output, width, style)
     subplots('plots.png',year_cap)
     stitch('output.png','plots.png')
 
