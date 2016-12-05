@@ -70,10 +70,7 @@ def subplots(filename,year_cap):
     plt.savefig(filename)
 
 def stitch(pov_map, plots):
-    """Merge two images into one, displayed side by side
-    :param file1: path to first image file
-    :param file2: path to second image file
-    :return: the merged Image object
+    """Merges my plots and map into one image
     """
     image1 = Image.open(pov_map)
     image2 = Image.open(plots)
@@ -84,7 +81,7 @@ def stitch(pov_map, plots):
     result_width = width1 + width2
     result_height = max(height1, height2)
 
-    result = Image.new('RGB', (result_width, result_height))
+    result = Image.new('RGB', (result_width, result_height), 'white')
     result.paste(im=image1, box=(0, 0))
     result.paste(im=image2, box=(width1, 0))
     result.save('stitched.png')
