@@ -6,7 +6,7 @@ class Region:
 
     def __init__(self, coords, pov_pct):
         self.coords = coords
-        self.pov_pct = pov_pct
+        self.pov_pct = pov_pct/100
 
     def lats(self):
         "Return a list of the latitudes of all the coordinates in the region"
@@ -34,4 +34,3 @@ class Region:
 
     def poverty_rate(self):
         return self.pov_pct
-
