@@ -1,55 +1,97 @@
-import sys
-import csv
-import math
-from region import Region
-from plot import Plot
+from PIL import Image, ImageDraw
+from PIL.ImageColor import getrgb
 
-def mercator(lat):
-    """project latitude 'lat' according to Mercator"""
-    lat_rad = (lat * math.pi) / 180
-    projection = math.log(math.tan((math.pi / 4) + (lat_rad / 2)))
-    return (180 * projection) / math.pi
 
-def main(poverty, boundaries, output, width, style):
+class Plot:
+
     """
-    Draws an image.
-    This function creates an image object, constructs Region objects by reading
-    in data from csv files, and draws polygons on the image based on those Regions
-
-    Args:
-        results (str): name of a csv file of election results
-        boundaries (str): name of a csv file of geographic information
-        output (str): name of a file to save the image
-        width (int): width of the image
-        style (str): either 'GRAD' or 'SOLID'
+    Provides the ability to map, draw and color regions in a long/lat
+    bounding box onto a proportionally scaled image.
     """
-    def to_point(coords):
-        new_coords=[]
-        for index in range(2,len(coords)):
-            if index%2 == 0:
-                new_coords.append((float(coords[index]),mercator(float(coords[index+1]))))
-        return new_coords
+    @staticmethod
+    def interpolate(x_1, x_2, x_3, newlength):
+        """
+        linearly interpolates x_2 <= x_1 <= x_3 into newlength
+        x_2 and x_3 define a line segment, and x2 falls somewhere between them
+        scale the width of the line segment to newlength, and return where
+        x_1 falls on the scaled line.
+        """
+        return ((x_1 - x_2)/(x_3 - x_2))*(newlength)
 
-    with open(boundaries, 'r') as f1, open (poverty, 'r') as f2:
-        region_list = [Region(to_point(bounds),float(pov_percent[1])) for bounds,pov_percent in zip(csv.reader(f1),csv.reader(f2))]
-    regionminlat = min([region.min_lat() for region in region_list])
-    regionmaxlat = max([region.max_lat() for region in region_list])
-    regionminlong = min([region.min_long() for region in region_list])
-    regionmaxlong = max([region.max_long() for region in region_list])
-    
+    @staticmethod
+    def proportional_height(new_width, width, height):
+        """
+        return a height for new_width that is
+        proportional to height with respect to width
+        Yields:
+            int: a new height
+        """
+        return int((height/width)*new_width)
 
-    region_plot = Plot(width,regionminlong,regionminlat,regionmaxlong,regionmaxlat)
-    for region in region_list:
-        region_plot.draw(region,style)
-    region_plot.save(output)
+    @staticmethod
+    def solid(region):
+        """
+        a solid color based on a region's plurality of votes
+        Args:
+            region (Region): a region object
+        Yields:
+            (int, int, int): a triple (RGB values between 0 and 255)
+        """
+        if region.poverty_rate() != 0:
+            return getrgb('PURPLE')
 
+    @staticmethod
+    def gradient(region):
+        """
+        a gradient color based on percentages of votes in a region
+        Args:
+            region (Region): a region object
+        Yields:
+            (int, int, int): a triple (RGB values between 0 and 255)
+        """
+        return (int(region.poverty_rate()*78),int(region.poverty_rate()*1),int(region.poverty_rate()*1))
 
+    @staticmethod
+    def fill(region, style):
+        """return the fill color for region according to the given 'style'"""
+        if style == "GRAD":
+            return Plot.gradient(region)
+        else:
+            return Plot.solid(region)
 
+    def __init__(self, width, min_long, min_lat, max_long, max_lat):
+        """
+        Create a width x height image where height is proportional to width
+        with respect to the long/lat coordinates.
+        """
+        self.min_long = min_long
+        self.min_lat = min_lat
+        self.max_long = max_long
+        self.max_lat = max_lat
+        self.height = Plot.proportional_height(width, max_long - min_long, max_lat - min_lat)
+        self.width = width
+        self.Image = Image.new("RGB",(width, self.height),(255,255,255))
 
-if __name__ == '__main__':
-    poverty = sys.argv[1]
-    boundaries = sys.argv[2]
-    output = sys.argv[3]
-    width = int(sys.argv[4])
-    style = sys.argv[5]
-    main(poverty, boundaries, output, width, style)
+    def save(self, filename):
+        """save the current image to 'filename'"""
+        self.Image.save(filename,"PNG")
+
+    def draw(self, region, style):
+        """
+        Draws 'region' in the given 'style' at the correct position on the
+        current image
+        Args:
+            region (Region): a Region object with a set of coordinates
+            style (str): 'GRAD' or 'SOLID' to determine the polygon's fill
+        """
+        def trans_longs():
+            return[int(Plot.interpolate(lon,self.min_long, self.max_long, self.width)) for lon in region.longs()]
+
+        def trans_lats():
+            return[self.height - int(Plot.interpolate(lat, self.min_lat,self.max_lat,self.height)) for lat in region.lats()]
+
+        coords = [(x,y) for x,y in zip(trans_longs(),trans_lats())]
+        #print(coords)
+
+        print(Plot.fill(region,style))
+        ImageDraw.Draw(self.Image).polygon(coords,Plot.fill(region,style), outline = None)
