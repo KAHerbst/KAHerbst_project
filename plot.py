@@ -31,7 +31,7 @@ class Plot:
     @staticmethod
     def solid(region):
         """
-        a solid color based on a region's plurality of votes
+        a solid color based on whether a region has poverty or not
         Args:
             region (Region): a region object
         Yields:
@@ -43,13 +43,13 @@ class Plot:
     @staticmethod
     def gradient(region):
         """
-        a gradient color based on percentages of votes in a region
+        a gradient color based on poverty percentage in a region
         Args:
             region (Region): a region object
         Yields:
             (int, int, int): a triple (RGB values between 0 and 255)
         """
-        return (int(region.poverty_rate()*78),int(region.poverty_rate()*1),int(region.poverty_rate()*1))
+        return (int(region.poverty_rate()*210), int(region.poverty_rate()*195), int(region.poverty_rate()*229))
 
     @staticmethod
     def fill(region, style):
@@ -90,8 +90,4 @@ class Plot:
         def trans_lats():
             return[self.height - int(Plot.interpolate(lat, self.min_lat,self.max_lat,self.height)) for lat in region.lats()]
 
-        coords = [(x,y) for x,y in zip(trans_longs(),trans_lats())]
-        #print(coords)
-
-        print(Plot.fill(region,style))
         ImageDraw.Draw(self.Image).polygon(coords,Plot.fill(region,style), outline = None)
