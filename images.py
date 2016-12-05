@@ -47,11 +47,11 @@ def main(poverty, boundaries, output, width, style):
 
 def subplots(filename,year_cap):
     '''Creates two subplots graphing US overall poverty percentage and SNAP enrollment and saves them to a specified filename'''
-    
+
     pov_lst = [11.3, 11.7, 12.1, 12.5, 12.7, 13.3, 13.3, 13.0, 13.2, 14.3, 15.3, 15.9, 15.9, 15.8, 15.5]
 
     SNAP_lst = [17.194000, 17.318000, 19.096000, 21.250000, 23.811000, 25.628000, 26.549000, 26.316000, 28.223000, 33.490000, 40.302000, 44.709000, 46.609000, 47.636000, 46.664000]
-    years = [x for x in range(year_cap-2000)]
+    years = [x for x in range(int(year_cap)-2000)]
 
     plt1 = plt.subplot2grid((4,10),(0,0), colspan = 9, rowspan = 2)
     for x in years:
@@ -65,7 +65,7 @@ def subplots(filename,year_cap):
     plt1.set_ylabel('Poverty Percentage')
     plt2.set_ylabel('SNAP Enrollment (In Millions)')
     plt.tight_layout()
-    plt.show()
+    plt.savefig(filename)
 
 
 if __name__ == '__main__':
@@ -76,4 +76,7 @@ if __name__ == '__main__':
     style = sys.argv[5]
     year_cap = sys.argv[6]
     main(poverty, boundaries, output, width, style)
-    subplots(plots,year_cap)
+    subplots('plots.png',year_cap)
+
+# To run
+# python poverty.py poverty_formatted.csv boundaries_trimmed.csv output.png 1024 GRAD 2014
