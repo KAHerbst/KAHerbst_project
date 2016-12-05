@@ -61,7 +61,6 @@ def subplots(filename,year_cap):
     for x in years:
         plt2.scatter(x,SNAP_lst[x])
 
-
     plt2.set_xlabel('Year')
     plt1.set_ylabel('Poverty Percentage')
     plt2.set_ylabel('SNAP Enrollment (In Millions)')
