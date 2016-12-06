@@ -33,9 +33,9 @@ I am starting from semi-existing code, I will use a similar structure to the Pur
 
 # Final Project Report
 *What you have achieved/learned*
-I have really learned quite a bit of debugging techniques and patience for bugs. Further I have gotten a better grasp on objects and their use as well as formatting data uniformly.
+I have really learned quite a bit of debugging techniques and patience for bugs. Further I have gotten a better grasp on objects and their use as well as formatting data uniformly. As for my original plans, they fell quite short, but I was able to use the skeleton of the Purple America lab and a similar mapping technique to achieve my gif in the end. I mainly learned that I might have a plan, but there is no real way to see if it will wokr until I try it. This time my original plan failed and I had to take an alternative route, but it all worked out in the end.
 *What open questions remain*
-I was not able to do it for Hawaii and Alaska so I am still curious as to how they changed.
+I was not able to do it for Hawaii and Alaska so I am still curious as to how they changed. Also, I still have no idea how to use VEGA and I would definitely like to figure that out eventually (it would've made this project much easier if I could only figure out how).
 ## Instructions to run the code (From the Terminal)
 To run the code it is pretty simple
 
