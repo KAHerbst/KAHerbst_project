@@ -29,36 +29,16 @@ class Plot:
         return int((height/width)*new_width)
 
     @staticmethod
-    def solid(region):
-        """
-        a solid color based on whether a region has poverty or not
-        Args:
-            region (Region): a region object
-        Yields:
-            (int, int, int): a triple (RGB values between 0 and 255)
-        """
-        if region.poverty_rate() != 0:
-            return getrgb('PURPLE')
-
-    @staticmethod
-    def gradient(region):
-        """
-        a gradient color based on poverty percentage in a region
-        Args:
-            region (Region): a region object
-        Yields:
-            (int, int, int): a triple (RGB values between 0 and 255)
-        """
-        return (255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1100))
-
-
-    @staticmethod
-    def fill(region, style):
+    def fill(region, color):
         """return the fill color for region according to the given 'style'"""
-        if style == "GRAD":
-            return Plot.gradient(region)
-        else:
-            return Plot.solid(region)
+        if color == "Turquoise":
+            return (255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1100))
+        elif color == "Purple":
+            return (255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1100))
+        elif color == "Yellow":
+            return (255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1500))
+        elif color == 'Gray':
+            return (255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1500))
 
     def __init__(self, width, min_long, min_lat, max_long, max_lat):
         """
@@ -77,7 +57,7 @@ class Plot:
         """save the current image to 'filename'"""
         self.Image.save(filename,"PNG")
 
-    def draw(self, region, style):
+    def draw(self, region, color):
         """
         Draws 'region' in the given 'style' at the correct position on the
         current image
@@ -93,4 +73,4 @@ class Plot:
 
         coords = [(x,y) for x,y in zip(trans_longs(),trans_lats())]
 
-        ImageDraw.Draw(self.Image).polygon(coords,Plot.fill(region,style), outline = None)
+        ImageDraw.Draw(self.Image).polygon(coords,Plot.fill(region,color), outline = None)
