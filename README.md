@@ -15,6 +15,7 @@ I am starting from semi-existing code, I will use a similar structure to the Pur
 - math
 - matplotlib
 - PIL
+- ImageMagick command line tools
 
 ### Milestones
 - file formatting
@@ -44,7 +45,7 @@ To run the code it is pretty simple
 4) pip install all required modules
 4) go to the terminal and paste (python images.py 1024 GRAD 2014)
 5) wait for what seems like an eternity
-6) go back to the terminal and paste(convert -delay 60 -loop 0 stitches_*.png US_poverty.gif
+6) go back to the terminal and paste(convert -delay 60 -loop 0 stitches_*.png US_poverty.gif)
 7) wait again
 8) paste (open -a safari US_poverty.gif) to see the gif!
 
