@@ -33,7 +33,7 @@ def file_formatter(poverty_file, boundary_file,year):
         for row in trim_read:
             lst = row[0].split()
             poverty_dict[lst[0]] = row
-    with open('boundaries.csv', 'r') as bounds:
+    with open('region_data/boundaries_US', 'r') as bounds:
         boundaries = csv.reader(bounds)
         with open('poverty_formatted_{}.csv'.format(year), 'w') as pov_final:
             writer = csv.writer(pov_final)
