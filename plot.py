@@ -30,14 +30,14 @@ class Plot:
 
     @staticmethod
     def fill(region, color):
-        """return the fill color for region according to the given 'style'"""
-        if color == "Turquoise":
+        """return the fill color for regions"""
+        if color == "TURQUOISE":
             return (255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1100))
-        elif color == "Purple":
+        elif color == "PURPLE":
             return (255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1100))
-        elif color == "Yellow":
+        elif color == "YELLOW":
             return (255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1100), 255 - int(region.poverty_rate()*1500))
-        elif color == 'Gray':
+        elif color == 'GRAY':
             return (255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1500), 255 - int(region.poverty_rate()*1500))
 
     def __init__(self, width, min_long, min_lat, max_long, max_lat):
@@ -59,11 +59,11 @@ class Plot:
 
     def draw(self, region, color):
         """
-        Draws 'region' in the given 'style' at the correct position on the
+        Draws 'region' in the given 'color' at the correct position on the
         current image
         Args:
             region (Region): a Region object with a set of coordinates
-            style (str): 'GRAD' or 'SOLID' to determine the polygon's fill
+            color (str): 'TURQUOISE', 'PURPLE', 'YELLOW' or 'GRAY' to determine the color of the regions
         """
         def trans_longs():
             return[int(Plot.interpolate(lon,self.min_long, self.max_long, self.width)) for lon in region.longs()]
