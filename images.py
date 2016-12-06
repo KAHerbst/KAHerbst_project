@@ -15,7 +15,7 @@ def mercator(lat):
     return (180 * projection) / math.pi
 
 def file_formatter(poverty_file, boundary_file,year):
-    '''formats my poverty file to be in the same format as my boundary file, so they can read and mapped in unison'''
+    '''formats my poverty file to be in the same format as my boundary file, so they can be read and mapped in unison'''
     f=pd.read_csv(poverty_file)
     keep_col = ['State / County Name' , 'All Ages in Poverty Percent']
     new_f = f[keep_col]
@@ -55,7 +55,7 @@ def main(poverty, boundaries, width, color ,year):
         boundaries (str): name of a csv file of geographic information
         output (str): name of a file to save the image
         width (int): width of the image
-        style (str): either 'GRAD' or 'SOLID'
+        color (str): style (str): 'TURQUOISE', 'PURPLE', 'YELLOW' or 'GRAY' to determine the color of the regions
     """
     def to_point(coords):
         new_coords=[]
@@ -79,13 +79,13 @@ def main(poverty, boundaries, width, color ,year):
 
 def subplots(filename,color,year_cap):
     '''Creates two subplots graphing US overall poverty percentage and SNAP enrollment and saves them to a specified filename'''
-    if color == "Purple":
+    if color == "PURPLE":
         line_color = 'm'
-    elif color == "Turquoise":
+    elif color == "TURQUOISE":
         line_color = 'c'
-    elif color == "Yellow":
+    elif color == "YELLOW":
         line_color = 'y'
-    elif color == "Gray":
+    elif color == "GRAY":
         line_color = 'k'
     pov_lst = [11.3, 11.7, 12.1, 12.5, 12.7, 13.3, 13.3, 13.0, 13.2, 14.3, 15.3, 15.9, 15.9, 15.8, 15.5]
     SNAP_lst = [17.194000, 17.318000, 19.096000, 21.250000, 23.811000, 25.628000, 26.549000, 26.316000, 28.223000, 33.490000, 40.302000, 44.709000, 46.609000, 47.636000, 46.664000]
@@ -94,13 +94,11 @@ def subplots(filename,color,year_cap):
     years = [x for x in range(int(year_cap)-1999)]
     plt1 = plt.subplot2grid((2,6),(0,1), colspan = 5, rowspan = 1)
     plt1.axis([-1,15,0,20])
-    #plt1.scatter(years,pov_lst[:int(year_cap)-1999])
     plt1.plot(years, pov_lst[:int(year_cap)-1999], '.{}-'.format(line_color))
 
 
     plt2 = plt.subplot2grid((2,6),(1,1), colspan = 5, rowspan = 1)
     plt2.axis([-1,15,15,50])
-    #plt2.scatter(years,SNAP_lst[:int(year_cap)-1999])
     plt2.plot(years, SNAP_lst[:int(year_cap)-1999], '.{}-'.format(line_color))
 
     plt2.set_xlabel('Year (2000\'s)')
@@ -110,7 +108,7 @@ def subplots(filename,color,year_cap):
     plt.savefig(filename)
 
 def stitch(pov_map, plots,year):
-    """Merges my plots and map into one image
+    """Merges my map and sub_plots into one image
     """
     map_img= Image.open(pov_map)
     plot_img= Image.open(plots)
