@@ -9,27 +9,41 @@ The formatting of the map for my county poverty data is trickier than the Purple
 I am starting from semi-existing code, I will use a similar structure to the Purple America lab, but also like the gif lab that Bill linked me when we spoke about the project (from an earlier version of the class). I will most likely use recursion to build up my gifs from previous 'frames', object oriented programming similar to Purple America and imaging (similar to Purple America.
 
 ### External Libraries
-- csv
-- math
 - sys
-- vincent
-- vega
+- csv
+- pandas
+- math
+- matplotlib
 - PIL
 
 ### Milestones
-- Feature 1
-- Feature 2
-- ...
+- file formatting
+- mapping pov_pct to corresponding regions
+- SNAP/overall poverty plot making
+- stitching map and plots together
+- figuring out how to run it
+- gif creation
 
 
 ## Deliverables
-- Deliverable 1
-- Deliverable 2
-- ...
+- 15 maps of the US with color gradient depending on pov_pct there
+- 15 subplots marking the progression of SNAP enrollment and pov_pct in the US
+- 1 gif with all corresponding images stiched
 
 # Final Project Report
 *What you have achieved/learned*
 
 *What open questions remain*
 
-## Instructions to run the code
+## Instructions to run the code (From the Terminal)
+To run the code it is pretty simple
+
+1) install (using pip) all required modules
+2) clone my repo (git clone https://github.com/williams-cs/KAHerbst-project/tree/master/region_data)
+3) activate and enter your virtual environment (pyvenv venv, .venv/bin/activate)
+4) go to the terminal and paste (python image.py 1024 GRAD 2014)
+5) wait for what seems like an eternity
+6) go back to the terminal and paste(convert -delay 60 -loop 0 stitches_*.png US_poverty.gif
+7) wait again
+8) paste (open -a safari US_poverty.gif) to see the gif!
+
