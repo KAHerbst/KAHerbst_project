@@ -14,7 +14,7 @@ def mercator(lat):
     projection = math.log(math.tan((math.pi / 4) + (lat_rad / 2)))
     return (180 * projection) / math.pi
 
-def file_formatter(poverty_file, boundary_file,year):
+def file_formatter(poverty_file,year):
     '''formats my poverty file to be in the same format as my boundary file, so they can read and mapped in unison'''
     f=pd.read_csv(poverty_file)
     keep_col = ['State / County Name' , 'All Ages in Poverty Percent']
@@ -33,7 +33,7 @@ def file_formatter(poverty_file, boundary_file,year):
         for row in trim_read:
             lst = row[0].split()
             poverty_dict[lst[0]] = row
-    with open('boundaries_US', 'r') as bounds:
+    with open('region_data/boundaries_US', 'r') as bounds:
         boundaries = csv.reader(bounds)
         with open('poverty_formatted_{}.csv'.format(year), 'w') as pov_final:
             writer = csv.writer(pov_final)
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     style = sys.argv[2]
     year_cap = sys.argv[3]
     for year in range(2000, int(year_cap) +1):
-        file_formatter('region_data/US_Poverty_{}'.format(year), 'region_data/boundaries_US',year)
+        file_formatter('region_data/US_Poverty_{}'.format(year),year)
     for year in range(2000, int(year_cap) + 1):
         main("poverty_formatted_{}.csv".format(year), 'region_data/boundaries_US', width, style, year)
     for year in range(2000, int(year_cap) + 1):
