@@ -41,7 +41,7 @@ To run the code it is pretty simple
 1) install (using pip) all required modules
 2) clone my repo (git clone https://github.com/williams-cs/KAHerbst-project/tree/master/region_data)
 3) activate and enter your virtual environment (pyvenv venv, .venv/bin/activate)
-4) go to the terminal and paste (python image.py 1024 GRAD 2014)
+4) go to the terminal and paste (python images.py 1024 GRAD 2014)
 5) wait for what seems like an eternity
 6) go back to the terminal and paste(convert -delay 60 -loop 0 stitches_*.png US_poverty.gif
 7) wait again
