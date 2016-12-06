@@ -1,5 +1,5 @@
 # Final Project Proposal
-For my CSCI 135 final project I would like to do something similar to our earlier Purple America Lab. However, I would like to map census data detailing percentage of population in poverty in specific counties (And use a color gradeint to indicate this like in Purple America). I want to create seperate images for all the years from 200-2014 and use them each as a frame in gif. I think this project is interesting because it allows me to easily visualize poverty rate in the US over time and helps to put into perspective where certain areas are worsening or getting better over time. I am really intersted in Economics and especially social welfare and this will be a gnarly project to not only feel empowered by computer science but to do something I think will have lasting value.
+For my CSCI 135 final project I would like to do something similar to our earlier Purple America Lab. However, I would like to map census data detailing percentage of population in poverty in specific counties (And use a color gradeint to indicate this like in Purple America). I want to create separate images for all the years from 2000-2014 and use them each as a frame in a gif. I think this project is interesting because it allows me to easily visualize poverty rate in the US over time and helps to put into perspective where certain areas are worsening or getting better over time. I am really intersted in Economics and especially social welfare and this will be a gnarly project to not only feel empowered by computer science but to do something I think will have lasting value.
 
 ## Data Plan
 My sources of data are as follows, I will pull all my county level poverty data and national poverty data in csv files from census.gov. I will pull all my SNAP enrollment from fns.gov and use each point at each year to map points onto each "frame" of my gif.
@@ -32,9 +32,9 @@ I am starting from semi-existing code, I will use a similar structure to the Pur
 
 # Final Project Report
 *What you have achieved/learned*
-
+I have really learned quite a bit of debugging techniques and patience for bugs. Further I have gotten a better grasp on objects and their use as well as formatting data uniformly.
 *What open questions remain*
-
+N/A
 ## Instructions to run the code (From the Terminal)
 To run the code it is pretty simple
 
