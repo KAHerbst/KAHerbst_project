@@ -127,9 +127,9 @@ if __name__ == '__main__':
     color = sys.argv[2]
     year_cap = sys.argv[3]
     for year in range(2000, int(year_cap) +1):
-        file_formatter('KAHerbst-project/region_data/US_Poverty_{}'.format(year), 'KAHerbst-project/region_data/boundaries_US',year)
+        file_formatter('region_data/US_Poverty_{}'.format(year), 'region_data/boundaries_US',year)
     for year in range(2000, int(year_cap) + 1):
-        main("poverty_formatted_{}.csv".format(year), 'KAHerbst-project/region_data/boundaries_US', width, color, year)
+        main("poverty_formatted_{}.csv".format(year), 'region_data/boundaries_US', width, color, year)
     for year in range(2000, int(year_cap) + 1):
         subplots('plots_{}.png'.format(year),color,year)
     for year in range(2000, int(year_cap) + 1):
