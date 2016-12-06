@@ -14,7 +14,7 @@ def mercator(lat):
     projection = math.log(math.tan((math.pi / 4) + (lat_rad / 2)))
     return (180 * projection) / math.pi
 
-def file_formatter(poverty_file,year):
+def file_formatter(poverty_file, boundary_file,year):
     '''formats my poverty file to be in the same format as my boundary file, so they can read and mapped in unison'''
     f=pd.read_csv(poverty_file)
     keep_col = ['State / County Name' , 'All Ages in Poverty Percent']
@@ -33,7 +33,7 @@ def file_formatter(poverty_file,year):
         for row in trim_read:
             lst = row[0].split()
             poverty_dict[lst[0]] = row
-    with open('region_data/boundaries_US', 'r') as bounds:
+    with open('boundaries.csv', 'r') as bounds:
         boundaries = csv.reader(bounds)
         with open('poverty_formatted_{}.csv'.format(year), 'w') as pov_final:
             writer = csv.writer(pov_final)
@@ -44,7 +44,7 @@ def file_formatter(poverty_file,year):
 
 
 
-def main(poverty, boundaries, width, style,year):
+def main(poverty, boundaries, width, color ,year):
     """
     Draws an image.
     This function creates an image object, constructs Region objects by reading
@@ -74,11 +74,19 @@ def main(poverty, boundaries, width, style,year):
 
     region_plot = Plot(width,regionminlong,regionminlat,regionmaxlong,regionmaxlat)
     for region in region_list:
-        region_plot.draw(region,style)
+        region_plot.draw(region,color)
     region_plot.save('output_{}.png'.format(year))
 
-def subplots(filename,year_cap):
+def subplots(filename,color,year_cap):
     '''Creates two subplots graphing US overall poverty percentage and SNAP enrollment and saves them to a specified filename'''
+    if color == "Purple":
+        line_color = 'm'
+    elif color == "Turquoise":
+        line_color = 'c'
+    elif color == "Yellow":
+        line_color = 'y'
+    elif color == "Gray":
+        line_color = 'k'
     pov_lst = [11.3, 11.7, 12.1, 12.5, 12.7, 13.3, 13.3, 13.0, 13.2, 14.3, 15.3, 15.9, 15.9, 15.8, 15.5]
     SNAP_lst = [17.194000, 17.318000, 19.096000, 21.250000, 23.811000, 25.628000, 26.549000, 26.316000, 28.223000, 33.490000, 40.302000, 44.709000, 46.609000, 47.636000, 46.664000]
     pov_lst = pov_lst[:int(year_cap)-1999]
@@ -86,12 +94,14 @@ def subplots(filename,year_cap):
     years = [x for x in range(int(year_cap)-1999)]
     plt1 = plt.subplot2grid((2,6),(0,1), colspan = 5, rowspan = 1)
     plt1.axis([-1,15,0,20])
-    plt1.scatter(years,pov_lst[:int(year_cap)-1999])
+    #plt1.scatter(years,pov_lst[:int(year_cap)-1999])
+    plt1.plot(years, pov_lst[:int(year_cap)-1999], '.{}-'.format(line_color))
 
 
     plt2 = plt.subplot2grid((2,6),(1,1), colspan = 5, rowspan = 1)
     plt2.axis([-1,15,15,50])
-    plt2.scatter(years,SNAP_lst[:int(year_cap)-1999])
+    #plt2.scatter(years,SNAP_lst[:int(year_cap)-1999])
+    plt2.plot(years, SNAP_lst[:int(year_cap)-1999], '.{}-'.format(line_color))
 
     plt2.set_xlabel('Year (2000\'s)')
     plt1.set_ylabel('Poverty Percentage')
@@ -116,13 +126,13 @@ def stitch(pov_map, plots,year):
 
 if __name__ == '__main__':
     width = int(sys.argv[1])
-    style = sys.argv[2]
+    color = sys.argv[2]
     year_cap = sys.argv[3]
     for year in range(2000, int(year_cap) +1):
-        file_formatter('region_data/US_Poverty_{}'.format(year),year)
+        file_formatter('KAHerbst-project/region_data/US_Poverty_{}'.format(year), 'KAHerbst-project/region_data/boundaries_US',year)
     for year in range(2000, int(year_cap) + 1):
-        main("poverty_formatted_{}.csv".format(year), 'region_data/boundaries_US', width, style, year)
+        main("poverty_formatted_{}.csv".format(year), 'KAHerbst-project/region_data/boundaries_US', width, color, year)
     for year in range(2000, int(year_cap) + 1):
-        subplots('plots_{}.png'.format(year),year)
+        subplots('plots_{}.png'.format(year),color,year)
     for year in range(2000, int(year_cap) + 1):
         stitch('output_{}.png'.format(year),'plots_{}.png'.format(year),year)
