@@ -35,7 +35,7 @@ I am starting from semi-existing code, I will use a similar structure to the Pur
 *What you have achieved/learned*
 I have really learned quite a bit of debugging techniques and patience for bugs. Further I have gotten a better grasp on objects and their use as well as formatting data uniformly.
 *What open questions remain*
-N/A
+I was not able to do it for Hawaii and Alaska so I am still curious as to how they changed.
 ## Instructions to run the code (From the Terminal)
 To run the code it is pretty simple
 
@@ -43,9 +43,10 @@ To run the code it is pretty simple
 2) clone my repo
 3) ls into my repo (KAHerbst-project)
 4) pip install all required modules
-4) go to the terminal and paste (python images.py 1024 GRAD 2014)
+4) choose a color from the following 'TURQUOISE', 'PURPLE', 'YELLOW' and 'GRAY'
+5) Go to the terminal and type 'python images.py 1024 COLOR 2014' substitutiing your chosen color for COLOR
 5) wait for what seems like an eternity
-6) go back to the terminal and paste(convert -delay 60 -loop 0 stitches_*.png US_poverty.gif)
+6) go back to the terminal and paste(convert -delay 50 -loop 0 stitches_*.png US_poverty.gif)
 7) wait again
 8) paste (open -a safari US_poverty.gif) to see the gif!
 
