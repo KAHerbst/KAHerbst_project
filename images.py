@@ -15,7 +15,7 @@ def mercator(lat):
     projection = math.log(math.tan((math.pi / 4) + (lat_rad / 2)))
     return (180 * projection) / math.pi
 
-def file_formatter(poverty_file, boundary_file):
+def file_formatter(poverty_file, boundary_file,year):
     '''formats my poverty file to be in the same format as my boundary file, so they can read and mapped in unison'''
     f=pd.read_csv(poverty_file)
     keep_col = ['State / County Name' , 'All Ages in Poverty Percent']
@@ -36,7 +36,7 @@ def file_formatter(poverty_file, boundary_file):
             poverty_dict[lst[0]] = row
     with open('boundaries.csv', 'r') as bounds:
         boundaries = csv.reader(bounds)
-        with open('poverty_formatted.csv', 'w') as pov_final:
+        with open('poverty_formatted_{}.csv'.format(year), 'w') as pov_final:
             writer = csv.writer(pov_final)
             for row in boundaries:
                 if row[0] not in poverty_dict:
@@ -45,7 +45,7 @@ def file_formatter(poverty_file, boundary_file):
 
 
 
-def main(poverty, boundaries, output, width, style,year):
+def main(poverty, boundaries, width, style,year):
     """
     Draws an image.
     This function creates an image object, constructs Region objects by reading
@@ -116,18 +116,19 @@ def stitch(pov_map, plots,year_cap):
 
 
 if __name__ == '__main__':
-    poverty_file = sys.argv[1]
-    boundary_file = sys.argv[2]
-    poverty_formatted= sys.argv[3]
-    boundaries_formatted = sys.argv[4]
-    output = sys.argv[5]
-    width = int(sys.argv[6])
-    style = sys.argv[7]
-    year_cap = sys.argv[8]
-    file_formatter(poverty_file, boundary_file)
-    main(poverty_formatted, boundaries_formatted, output, width, style, year_cap)
-    subplots('plots_{}.png'.format(year_cap),year_cap)
-    stitch('output_{}.png'.format(year_cap),'plots_{}.png'.format(year_cap),year_cap)
+    width = int(sys.argv[1])
+    style = sys.argv[2]
+    year_cap = sys.argv[3]
+    for year in range(2000, int(year_cap) +1):
+        file_formatter('KAHerbst-project/region_data/US_Poverty_{}'.format(year), 'KAHerbst-project/region_data/boundaries_US',year)
+    for year in range(2000, int(year_cap) + 1):
+        main("poverty_formatted_{}.csv".format(year), 'KAHerbst-project/region_data/boundaries_US', width, style, year)
+    for year in range(2000, int(year_cap) + 1):
+        subplots('plots_{}.png'.format(year),year_cap)
+    #Not fully iterating
+    for year in range(2000, int(year_cap) + 1):
+        stitch('output_{}.png'.format(year),'plots_{}.png'.format(year),year)
 
 # To run
+#git clone https://github.com/williams-cs/KAHerbst-project/tree/master/region_data
 # python poverty.py poverty_data.csv boundaries.csv poverty_formatted.csv boundaries_trimmed.csv output.png 1024 GRAD year_cap
