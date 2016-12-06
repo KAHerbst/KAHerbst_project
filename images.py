@@ -4,7 +4,6 @@ import pandas as pd
 import math
 from region import Region
 from plot import Plot
-import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -100,7 +99,7 @@ def subplots(filename,year_cap):
     plt.tight_layout()
     plt.savefig(filename)
 
-def stitch(pov_map, plots,year_cap):
+def stitch(pov_map, plots,year):
     """Merges my plots and map into one image
     """
     map_img= Image.open(pov_map)
@@ -112,7 +111,7 @@ def stitch(pov_map, plots,year_cap):
     result = Image.new('RGB', (result_width, result_height), 'white')
     result.paste(im=map_img, box=(0, 0))
     result.paste(im=plot_img, box=(width1, 0))
-    result.save('stitches_{}.png'.format(year_cap))
+    result.save('stitches_{}.png'.format(year))
 
 
 if __name__ == '__main__':
@@ -124,11 +123,6 @@ if __name__ == '__main__':
     for year in range(2000, int(year_cap) + 1):
         main("poverty_formatted_{}.csv".format(year), 'KAHerbst-project/region_data/boundaries_US', width, style, year)
     for year in range(2000, int(year_cap) + 1):
-        subplots('plots_{}.png'.format(year),year_cap)
-    #Not fully iterating
+        subplots('plots_{}.png'.format(year),year)
     for year in range(2000, int(year_cap) + 1):
         stitch('output_{}.png'.format(year),'plots_{}.png'.format(year),year)
-
-# To run
-#git clone https://github.com/williams-cs/KAHerbst-project/tree/master/region_data
-# python poverty.py poverty_data.csv boundaries.csv poverty_formatted.csv boundaries_trimmed.csv output.png 1024 GRAD year_cap
