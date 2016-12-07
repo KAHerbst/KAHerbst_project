@@ -15,7 +15,9 @@ def mercator(lat):
     return (180 * projection) / math.pi
 
 def file_formatter(poverty_file, boundary_file,year):
-    '''formats my poverty file to be in the same format as my boundary file, so they can be read and mapped in unison'''
+    '''formats my poverty file to be in the same format as my boundary file, so they can be read and mapped in unison
+    Handles the fact that the bondary file contains duplicates of counties in specific places by using a dicitionary and keys
+    to duplicate these rows in my poverty file'''
     f=pd.read_csv(poverty_file)
     keep_col = ['State / County Name' , 'All Ages in Poverty Percent']
     new_f = f[keep_col]
@@ -55,7 +57,7 @@ def main(poverty, boundaries, width, color ,year):
         boundaries (str): name of a csv file of geographic information
         output (str): name of a file to save the image
         width (int): width of the image
-        color (str): style (str): 'TURQUOISE', 'PURPLE', 'YELLOW' or 'GRAY' to determine the color of the regions
+        color (str): 'TURQUOISE', 'PURPLE', 'YELLOW' or 'GRAY' to determine the color of the regions
     """
     def to_point(coords):
         new_coords=[]
