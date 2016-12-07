@@ -33,4 +33,5 @@ class Region:
         return max(self.longs())
 
     def poverty_rate(self):
+        "Return the poverty percentage of the region"
         return self.pov_pct
