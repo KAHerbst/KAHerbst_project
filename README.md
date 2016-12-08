@@ -50,3 +50,4 @@ To run the code it is pretty simple
 7) wait again
 8) paste (open -a safari US_poverty.gif) to see the gif!
 
+(You can also pick a year and just do a gif for the year up to that year)
