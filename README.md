@@ -51,3 +51,19 @@ To run the code it is pretty simple
 8) paste (open -a safari US_poverty.gif) to see the gif!
 
 (You can also pick a year and just do a gif for the year up to that year)
+
+# Feedback
+- **Functionality**: 10/10
+ * Your description to run the code wasn't well formatted (github markdown is fairly intuitive and extremely well documented), but it had clear descriptions of the exact commands to type to run your code.
+- **Challenge and Endurance**: 10/10
+ * There were moments when you struggled, which is completely normal, but I was impressed with your perserverence.
+ * Stitching together multiple data sources with different formats is a challenge, and your dictionary approach was a good one.
+ * You also figured out how to make a .gif using outside documentation from non-Python sources, which is great.
+- **Code Quality**: 8/10
+ * This is the one area where I think you could have improved. You had several places with hard-coded strings, filenames, and integers. The power of functions is your ability to use parameters to really customize their behaviors. If you want to use hard-coded values to completely control your output, there are two reasonable approaces:
+  1. Use variable constants, or
+  2. Hard code the values *outside* the functions (perhaps in `__main__` or in a specialized `generate_specific_graph()` function), and pass the hard-coded values as parameters. That way you can reuse the function for arbitrary values while still having tight control over a particular set of outputs.
+- **Final Product**: 10/10
+ * In general, your visualization shows a lot of data in a compact and interesting way. I was excited by what you produced, your explanation, and your insights.
+ * Your map could have used a legend, but your image stitching and plots were excellent.
+
